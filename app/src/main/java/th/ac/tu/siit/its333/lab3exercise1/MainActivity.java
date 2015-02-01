@@ -1,5 +1,6 @@
 package th.ac.tu.siit.its333.lab3exercise1;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,12 +9,20 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
 
+    int cr = 0;         // Credits
+    double gp = 0.0;    // Grade points
+    double gpa = 0.0;   // Grade point average
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Values from child activity
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
