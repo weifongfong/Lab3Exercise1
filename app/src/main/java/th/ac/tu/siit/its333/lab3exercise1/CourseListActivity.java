@@ -1,51 +1,24 @@
 package th.ac.tu.siit.its333.lab3exercise1;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
-
-    int cr = 0;         // Credits
-    double gp = 0.0;    // Grade points
-    double gpa = 0.0;   // Grade point average
-
-    List<String> listCodes;
-    List<Integer> listCredits;
-    List<String> listGrades;
+public class CourseListActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        listCodes = new ArrayList<String>();
-        listCredits = new ArrayList<Integer>();
-        listGrades = new ArrayList<String>();
-
-        //Use listCodes.add("ITS333"); to add a new course code
-        //Use listCodes.size() to refer to the number of courses in the list
+        setContentView(R.layout.activity_course_list);
     }
 
-    public void buttonClicked(View v) {
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Values from child activity
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_course_list, menu);
         return true;
     }
 
