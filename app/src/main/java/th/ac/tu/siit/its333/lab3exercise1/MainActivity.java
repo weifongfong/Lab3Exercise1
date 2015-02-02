@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
     List<String> listCodes;
     List<Integer> listCredits;
     List<String> listGrades;
+    TextView tvGp, tvGPA, tvCredit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +32,127 @@ public class MainActivity extends ActionBarActivity {
         listCodes = new ArrayList<String>();
         listCredits = new ArrayList<Integer>();
         listGrades = new ArrayList<String>();
+        tvGp = (TextView)findViewById(R.id.tvGP);
+        tvGPA =(TextView)findViewById(R.id.tvGPA);
+        tvCredit = (TextView)findViewById(R.id.tvCR);
 
         //Use listCodes.add("ITS333"); to add a new course code
         //Use listCodes.size() to refer to the number of courses in the list
     }
 
     public void buttonClicked(View v) {
+        //Toast t = Toast.makeText(this,"Hello",Toast.LENGTH_SHORT);
+        //t.show();
+        int id = v.getId();
+        Intent i;
+        switch (id){
+            case R.id.button4:
+                i = new Intent(this, CourseListActivity.class);
+                startActivityForResult(i, 2);
+            break;
+            case R.id.button2:
+                i = new Intent(this, CourseActivity.class);
+                startActivityForResult(i, 1);
+            break;
+            case R.id.button:
+                listCodes = new ArrayList<String>();
+                listCredits = new ArrayList<Integer>();
+                listGrades = new ArrayList<String>();
+            break;
+
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Values from child activity
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                //String result = data.getStringExtra("retValue");
+                //tvResult.setText(result);
+                listCodes.add(data.getStringExtra("courseCode"));
+                listCredits.add(Integer.parseInt(data.getStringExtra("Credit")));
+                listGrades.add(data.getStringExtra("Grade"));
+
+                //Toast t = Toast.makeText(this,"Hello",Toast.LENGTH_SHORT);
+                //t.show();
+
+                tvCredit.setText(sumCredit()+"");
+                tvGp.setText(sumGradePoint()+"");
+                tvGPA.setText(calculateGPA()+"");
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                //tvResult.setText("CANCELED");
+            }
+        }
+    }
+
+    private int sumCredit(){
+        int sum = 0;
+        for(int i=0; i<listCredits.size();i++){
+            sum+=listCredits.get(i);
+        }
+        return sum;
+    }
+
+    private double sumGradePoint(){
+        int sum = 0;
+        for(int i=0; i<listGrades.size();i++){
+            switch(listGrades.get(i)){
+                case "A": sum+=(4*listCredits.get(i)); break;
+                case "B+" : sum+=3.5*listCredits.get(i); break;
+                case "B": sum+=3*listCredits.get(i); break;
+                case "C+" : sum+=2.5*listCredits.get(i); break;
+                case "C": sum+=2*listCredits.get(i); break;
+                case "D+" : sum+=1.5*listCredits.get(i); break;
+                case "D": sum+=1*listCredits.get(i); break;
+                case "F" : sum+=0*listCredits.get(i); break;
+
+            }
+        }
+        return sum;
+    }
+
+    private double lookUpGradePoint(String Grade){
+        double gradePoint = 0;
+
+        switch (Grade){
+            case "A":
+                gradePoint = 4.0;
+                break;
+            case "B+":
+                gradePoint = 3.5;
+                break;
+            case "B":
+                gradePoint = 3.0;
+                break;
+            case "C+":
+                gradePoint = 2.5;
+                break;
+            case "C":
+                gradePoint = 2.0;
+                break;
+            case "D+":
+                gradePoint = 1.5;
+                break;
+            case "D":
+                gradePoint = 1.0;
+                break;
+            default:
+                gradePoint = 0.0;
+                break;
+
+        }
+        return gradePoint;
+    }
+
+    private double calculateGPA(){
+        double sum1 = 0,sum2=0;
+        for(int i=0; i<listCodes.size();i++){
+            sum1 += listCredits.get(i)*lookUpGradePoint(listGrades.get(i));
+            sum2 += listCredits.get(i);
+        }
+        return (sum1/sum2);
     }
 
     @Override
